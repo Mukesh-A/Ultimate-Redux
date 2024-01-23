@@ -54,9 +54,11 @@ function reducer(state = { amount: 1 }, action) {
 
 //Action creator instead of writing type in dispatch. we can create action function and play Example.
 
-async function getUser(dispatch, getState) {
-  const { data } = await axios.get("http://localhost:3000/accounts/1");
-  dispatch(initUser(data.amount));
+function getUser(id) {
+  return async (dispatch, getState) => {
+    const { data } = await axios.get(`http://localhost:3000/accounts/${id}`);
+    dispatch(initUser(data.amount));
+  };
 }
 
 function initUser(value) {
@@ -85,7 +87,7 @@ function incrementByValue(value) {
 // store.dispatch(incrementByValue(5));
 
 setTimeout(() => {
-  store.dispatch(getUser);
+  store.dispatch(getUser(2));
 }, 2000);
 
 //Action END

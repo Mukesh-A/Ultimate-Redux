@@ -3,6 +3,11 @@ import axios from "axios";
 import logger from "redux-logger";
 import { thunk } from "redux-thunk";
 
+//Creating constants for fulfilled, pending,Rejected
+const getAccUserPending = "account/getUser/pending";
+const getAccUserFulFilled = "account/getUser/fulfilled";
+const getAccUserRejected = "account/getUser/rejected";
+
 //store
 const store = createStore(
   combineReducers({
@@ -37,6 +42,14 @@ function accountReducer(state = { amount: 1 }, action) {
 
   //instead of writing this much if use Switch
   switch (action.type) {
+    // will get all the state
+    case getAccUserFulFilled:
+      return { amount: action.payload };
+    case getAccUserRejected:
+      return { ...state, error: action.error };
+    case getAccUserPending:
+      return { ...state, pending:true };
+
     case "init":
       return { amount: action.payload };
     case "increment":
@@ -73,14 +86,28 @@ function bonusReducer(state = { points: 0 }, action) {
 
 function getUser(id) {
   return async (dispatch, getState) => {
-    const { data } = await axios.get(`http://localhost:3000/accounts/${id}`);
-    dispatch(initUser(data.amount));
+    try {
+      dispatch(getAccountUserPending());
+      const { data } = await axios.get(`http://localhost:3000/accounts/${id}`);
+      dispatch(getAccountUserFulFilled(data.amount));
+    } catch (error) {
+      dispatch(getAccountUserRejected(error.message));
+    }
   };
 }
 
-function initUser(value) {
-  return { type: "init", payload: value };
+function getAccountUserFulFilled(value) {
+  return { type: getAccUserFulFilled, payload: value };
 }
+function getAccountUserRejected(error) {
+  return { type: getAccUserRejected, error: error };
+}
+function getAccountUserPending() {
+  return { type: getAccUserPending };
+}
+// function initUser(value) {
+//   return { type: "init", payload: value };
+// }
 
 function increment() {
   return { type: "increment" };

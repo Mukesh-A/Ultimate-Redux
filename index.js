@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
 import axios from "axios";
-import  logger  from "redux-logger";
+import logger from "redux-logger";
 import { thunk } from "redux-thunk";
 
 //store
@@ -52,19 +52,15 @@ function reducer(state = { amount: 1 }, action) {
 //   console.log(store.getState());
 // });
 
-//Async API Call
-
-// async function getUser() {
-//   const { data } = await axios.get("http://localhost:3000/accounts/1");
-//   console.log(data);
-// }
-// getUser();
-
 //Action creator instead of writing type in dispatch. we can create action function and play Example.
 
-async function initUser(dispatch, getState) {
+async function getUser(dispatch, getState) {
   const { data } = await axios.get("http://localhost:3000/accounts/1");
-  dispatch({ type: "init", payload: data.amount });
+  dispatch(initUser(data.amount));
+}
+
+function initUser(value) {
+  return { type: "init", payload: value };
 }
 
 function increment() {
@@ -89,7 +85,7 @@ function incrementByValue(value) {
 // store.dispatch(incrementByValue(5));
 
 setTimeout(() => {
-  store.dispatch(initUser);
+  store.dispatch(getUser);
 }, 2000);
 
 //Action END

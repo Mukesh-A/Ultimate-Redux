@@ -1,13 +1,19 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import axios from "axios";
 import logger from "redux-logger";
 import { thunk } from "redux-thunk";
 
 //store
-const store = createStore(reducer, applyMiddleware(logger.default, thunk));
+const store = createStore(
+  combineReducers({
+    accountReducer,
+    bonusReducer,
+  }),
+  applyMiddleware(logger.default, thunk)
+);
 
 //reducer
-function reducer(state = { amount: 1 }, action) {
+function accountReducer(state = { amount: 1 }, action) {
   // //increment
   // if (action.type === "increment") {
   //   return {
@@ -39,6 +45,17 @@ function reducer(state = { amount: 1 }, action) {
       return { amount: state.amount - 1 };
     case "incrementByValue":
       return { amount: state.amount + action.payload };
+    default:
+      return state;
+  }
+}
+
+//bonus Reducer
+function bonusReducer(state = { points: 0 }, action) {
+  switch (action.type) {
+    case "init":
+      return { points: state.points + 1 };
+
     default:
       return state;
   }

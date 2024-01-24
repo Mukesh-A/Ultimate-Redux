@@ -27,7 +27,7 @@ export function getAccountUserPending() {
 }
 
 export function incrementBonus(value) {
-  return { type: "init", payload: value };
+  return { type: "init" };
 }
 
 export function increment() {

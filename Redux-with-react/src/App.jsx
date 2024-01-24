@@ -3,7 +3,7 @@ import Account from "./components/Account";
 import Bonus from "./components/Bonus";
 import { useSelector } from "react-redux";
 
-function App({ store }) {
+function App() {
   const amount = useSelector((state) => state.account.amount);
   const bonus = useSelector((state) => state.bonus.points);
   return (

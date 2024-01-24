@@ -21,8 +21,8 @@ export function accountReducer(state = { amount: 1 }, action) {
     case getAccUserPending:
       return { ...state, pending: true };
 
-    case "init":
-      return { amount: action.payload };
+    // case "init":
+    //   return { amount: action.payload };
     case "increment":
       return { amount: state.amount + 1 };
     case "decrement":

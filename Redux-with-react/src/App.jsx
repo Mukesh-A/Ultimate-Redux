@@ -1,12 +1,15 @@
 import "./App.css";
 import Account from "./components/Account";
 import Bonus from "./components/Bonus";
+import { useSelector } from "react-redux";
 
-function App() {
+function App({ store }) {
+  const amount = useSelector((state) => state.account.amount);
+  const bonus = useSelector((state) => state.bonus.points);
   return (
     <div className="App">
-      <h3>Current Amount:</h3>
-      <h3>Total Bonus:</h3>
+      <h3>Current Amount: {amount}</h3>
+      <h3>Total Bonus: {bonus}</h3>
 
       <Account />
       <Bonus />
